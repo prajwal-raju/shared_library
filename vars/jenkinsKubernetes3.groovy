@@ -22,7 +22,7 @@ environment {
         stage('BUILD IMAGE') {
 		agent{label 'docker'}
             	steps {
-                	sh 'docker build -t $registry:$dockerTag .'             
+                	sh 'sudo docker build -t $registry:$dockerTag .'             
             	}
         }
         stage('PUSH HUB') { 
@@ -30,7 +30,7 @@ environment {
             	steps {
                 	script {
                     		docker.withRegistry( '', '$registryCredential' ) {
-                        	sh 'docker push $registry:$dockerTag'
+                        	sh 'sudo docker push $registry:$dockerTag'
                     		}
                 	}    
             	}

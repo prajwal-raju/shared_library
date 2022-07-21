@@ -38,7 +38,7 @@ environment {
         stage('DEPLOY IMAGE') {
 		agent{label 'kubernetes'}
 		steps {
-			git branch: '$gitBranch', credentialsId: ['$gitCredID'], url: '$gitRepo'
+			checkout([$class: 'GitSCM', branches: [[name: "$gitBranch"]], extensions: [], userRemoteConfigs: [[credentialsId: "$gitCredId", url: "$gitRepo"]]])
 			sh 'kubectl apply -f manifest.yml --record'
 		}
 	}  

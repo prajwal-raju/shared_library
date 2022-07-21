@@ -16,7 +16,7 @@ environment {
         stage("POLL SCM"){
 		agent{label 'docker'}
             	steps {
-                	git branch: '$gitBranch', credentialsId: '$gitCredID', url: '$gitRepo'             
+                	checkout([$class: 'GitSCM', branches: [[name: "$gitBranch"]], extensions: [], userRemoteConfigs: [[credentialsId: "$gitCredId", url: "$gitRepo"]]])             
             	}
         } 
         stage('BUILD IMAGE') {

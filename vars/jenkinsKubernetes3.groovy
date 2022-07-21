@@ -30,7 +30,8 @@ environment {
             	steps {
                 	script {
                     		withDockerRegistry([ credentialsId: registryCredential, url: "https://index.docker.io/v1/" ]) {
-                        	sh 'sudo docker push $registry:$dockerTag'
+                        		sh 'docker tag $registry:$dockerTag $registry:$dockerTag'
+					sh 'sudo docker push $registry:$dockerTag'
                     		}
                 	}    
             	}

@@ -29,7 +29,7 @@ environment {
 		agent{label 'docker'}
             	steps {
                 	script {
-                    		withDockerRegistry([ credentialsId: registryCredential, url: "https://index.docker.io/v1/" ]) {
+                    		docker.withRegistry( '', registryCredential ) {
                         		sh 'docker tag $registry:$dockerTag $registry:$dockerTag'
 					sh 'sudo docker push $registry:$dockerTag'
                     		}

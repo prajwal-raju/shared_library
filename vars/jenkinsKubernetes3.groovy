@@ -28,13 +28,10 @@ environment {
         stage('PUSH HUB') { 
 		agent{label 'docker'}
             	steps {
-                	script {
-                    		docker.withRegistry( '', registryCredential ) {
-                        		sh 'docker tag $registry:$dockerTag $registry:$dockerTag'
-					sh 'sudo docker push $registry:$dockerTag'
-                    		}
-                	}    
-            	}
+			sh 'docker tag $registry:$dockerTag $registry:$dockerTag'
+			sh 'sudo docker push $registry:$dockerTag'
+                    	
+                }    
         }
         stage('DEPLOY IMAGE') {
 		agent{label 'kubernetes'}

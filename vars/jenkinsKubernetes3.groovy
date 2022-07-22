@@ -22,20 +22,19 @@ environment {
         stage('BUILD IMAGE') {
 		agent{label 'docker'}
             	steps {
-                	sh 'docker build -t $registry .'             
+                	sh 'docker build -t $registry:$dockerTag .'             
             	}
         }
         stage('PUSH HUB') { 
 		agent{label 'docker'}
             	steps {
-			sh 'docker push $registry'                   	
+			sh 'docker push $registry:$dockerTag'                   	
                 }    
         }
         stage('DEPLOY IMAGE') {
 		agent{label 'kubernetes'}
 		steps {
-			checkout([$class: 'GitSCM', branches: [[name: "$gitBranch"]], extensions: [], userRemoteConfigs: [[credentialsId: "$gitCredId", url: "$gitRepo"]]])
-			sh 'kubectl apply -f manifest.yml --record'
+			sh 'kubectl set image deploy webapp-deployment nodejs="$registry:$dockerTag" --record'
 		}
 	}  
     }

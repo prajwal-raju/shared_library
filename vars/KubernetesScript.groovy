@@ -43,9 +43,8 @@ environment {
 		stage('DEPLOY IMAGE') {
       agent{label 'kubernetes'}
 			steps {
-			  checkout([$class: 'GitSCM', branches: [[name: "$gitBranch"]], extensions: [], userRemoteConfigs: [[credentialsId: "$gitCredId", url: "$gitRepo"]]])
 			  sh 'kubectl set image deploy webapp-deployment nodejs="$registry:$dockerTag" --record'
-		}
+			}
 		}
 	}
 			  

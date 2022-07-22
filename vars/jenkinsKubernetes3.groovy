@@ -29,7 +29,7 @@ environment {
 		agent{label 'docker'}
             	steps {
 			sh 'docker tag $registry:$dockerTag $registry:$dockerTag'
-			sh 'sudo docker push $registry:$dockerTag'                   	
+			sh 'docker push $registry:$dockerTag'                   	
                 }    
         }
         stage('DEPLOY IMAGE') {

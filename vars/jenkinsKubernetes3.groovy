@@ -22,15 +22,14 @@ environment {
         stage('BUILD IMAGE') {
 		agent{label 'docker'}
             	steps {
-                	sh 'sudo docker build -t $registry:$dockerTag .'             
+                	sh 'docker build -t $registry:$dockerTag .'             
             	}
         }
         stage('PUSH HUB') { 
 		agent{label 'docker'}
             	steps {
 			sh 'docker tag $registry:$dockerTag $registry:$dockerTag'
-			sh 'sudo docker push $registry:$dockerTag'
-                    	
+			sh 'sudo docker push $registry:$dockerTag'                   	
                 }    
         }
         stage('DEPLOY IMAGE') {

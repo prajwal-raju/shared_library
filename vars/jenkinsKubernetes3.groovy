@@ -28,7 +28,7 @@ environment {
         stage('PUSH HUB') { 
 		agent{label 'docker'}
             	steps {
-			sh 'docker tag $registry $resgistry:$dockerTag'
+			sh 'docker tag $registry "$registry:$dockerTag"'
 			sh 'docker push $registry:$dockerTag'                   	
                 }    
         }

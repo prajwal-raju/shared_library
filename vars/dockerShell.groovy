@@ -34,7 +34,7 @@ environment {
         stage('DEPLOY IMAGE') {
 		agent{label 'docker'}
 		steps {
-			sh 'docker run -itd -p 3080:3080 --name "$registry-$dockerTag"'
+			sh 'docker run -itd -p 3080:3080 --name "$registry-$dockerTag" "$registry:$dockerTag"'
 		}
 	}  
     }

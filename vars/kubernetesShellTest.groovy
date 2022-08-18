@@ -1,4 +1,4 @@
-def call(String registryCred = 'a', String registryname = 'a', String docTag = 'a', String grepo = 'a', String gbranch = 'a', String gitcred = 'a', string contname = 'a', string imgname = 'a') {
+def call(String registryCred = 'a', String registryname = 'a', String docTag = 'a', String grepo = 'a', String gbranch = 'a', String gitcred = 'a', string depname = 'a', string contname = 'a') {
 
 pipeline {
 environment { 

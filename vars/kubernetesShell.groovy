@@ -1,13 +1,15 @@
-def call(String registryCred = 'a', String registryin = 'a', String docTag = 'a', String grepo = 'a', String gbranch = 'a', String gitcred = 'a') {
+def call(String registryCred = 'a', String registryname = 'a', String docTag = 'a', String grepo = 'a', String gbranch = 'a', String gitcred = 'a', String depname = 'a', String contname = 'a') {
 
 pipeline {
 environment { 
 		registryCredential = "${registryCred}"
-		registry = "$registryin" 	
+    		registry = "${registryname}" 	
 		dockerTag = "${docTag}$BUILD_NUMBER"
 		gitRepo = "${grepo}"
 		gitBranch = "${gbranch}"
 		gitCredId = "${gitcred}"
+    		deployment = "${depname}"
+    		containerName = "${contname}"
 	}
 		
     agent none
@@ -15,27 +17,30 @@ environment {
     stages {
         stage("POLL SCM"){
 		agent{label 'docker'}
-            	steps {
+            		steps {
                 	checkout([$class: 'GitSCM', branches: [[name: "$gitBranch"]], extensions: [], userRemoteConfigs: [[credentialsId: "$gitCredId", url: "$gitRepo"]]])             
-            	}
+            		}
         } 
+        
         stage('BUILD IMAGE') {
 		agent{label 'docker'}
-            	steps {
+            		steps {
                 	sh 'docker build -t $registry:$dockerTag .'             
-            	}
+            		}
         }
+        
         stage('PUSH HUB') { 
 		agent{label 'docker'}
-            	steps {
-			sh 'docker push $registry:$dockerTag'                   	
-                }    
+            		steps {
+			            sh 'docker push $registry:$dockerTag'                   	
+                	}    
         }
+        
         stage('DEPLOY IMAGE') {
 		agent{label 'kubernetes'}
-		steps {
-			sh 'kubectl set image deploy webapp-deployment nodejs="$registry:$dockerTag" --record'
-		}
+		          steps {
+			            sh 'kubectl set image deploy $deployment $containerName="$registry:$dockerTag" --record'
+		          }
 	}  
     }
 }  
